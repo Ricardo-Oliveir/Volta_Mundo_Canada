@@ -6,25 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gastronomia do Canadá</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <style>
-        .card-img-top {
-            height: 300px;
-            width: auto;
-            object-fit: cover;
-            cursor: pointer;
-            /* Adiciona o cursor de apontar */
-        }
-
-        .card-body {
-            display: none;
-            /* Inicialmente oculta o texto */
-        }
-
-        .card-body.show {
-            display: block;
-            /* Mostra o texto quando a classe show é aplicada */
-        }
-    </style>
+    <link rel="stylesheet" href="estilo.css">
 </head>
 
 <body>
@@ -39,7 +21,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.html">Pagina Inicial</a>
+                        <a class="nav-link active" aria-current="page" href="index.php">Pagina Inicial</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="turismo.html">Dicas de turismo</a>
@@ -48,7 +30,7 @@
                         <a class="nav-link" href="gastronomia.html">Dicas de Gastronomia</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Entre em Contato</a>
+                        <a class="nav-link" href="login.html">Painel Administrativo</a>
                     </li>
                 </ul>
             </div>
@@ -60,17 +42,48 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="card mb-4">
-                    <img src="img/poutine.jpg" class="card-img-top" alt="Poutine" onclick="toggleText(this)">
+                    <img src="img/Poutine.jpg.webp" class="card-img-top" alt="Poutine" onclick="toggleText(this)">
                     <div class="card-body">
-                        <h5 class="card-title">Poutine</h5>
-                        <p class="card-text">Um prato de origem canadense, consiste em batatas fritas cobertas com
-                            queijo
-                            coalho e regadas com um molho de carne.</p>
+                        O poutine é um prato que se origina da cidade de Quebec super saboroso O prato surgiu no final
+                        da década de
+                        1950, mas existem controvérsias evdisputas históricas reivindicando a autoria da receita.
+                        O detalhe diferente dessas batatas é o molho .
+
                     </div>
                 </div>
             </div>
-
-            <!-- Outras cartas omitidas para brevidade -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <img src="img/styleBagels.jpg" class="card-img-top" alt="Bagel estilo Montreal"
+                        onclick="toggleText(this)">
+                    <div class="card-body">
+                        O bagel estilo Montreal ou bagel de Montreal é uma variedade distinta de bagel feito à mão
+                        e assado no forno a lenha. Ao contrário do bagel nova-iorquino, o bagel de Montreal é menor,
+                        mais fino, mais doce e mais denso, com furo maior, e é sempre assado em forno a lenha.
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <img src="img/SmokedMeat.jpg" class="card-img-top" alt="Montreal Smoked Meat"
+                        onclick="toggleText(this)">
+                    <div class="card-body">
+                        Montreal Smoked Meat é um sanduíche de carne defumada e marinada com ervas e especiarias,
+                        são cortadas em finas fatias e postas em um pão fatiado caseiro. Além de ser super saboroso
+                        e famoso, o local onde o sanduíche é mais popular e também é super requisitado.
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <img src="img/Bannock.jpg" class="card-img-top" alt="Bannock" onclick="toggleText(this)">
+                    <div class="card-body">
+                        Bannock é um prato com raízes profundas na cultura dos povos indígenas do Canadá. Este pão
+                        simples, feito com ingredientes básicos, era um alimento básico nas dietas tradicionais e tem
+                        sido passado através de gerações.
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -96,11 +109,11 @@
                     </ul>
                 </div>
             </div>
-            <hr>
-            <div class="text-center">
-                <p>© 2024 Volta ao Mundo Canadá. Todos os direitos reservados.</p>
-            </div>
         </div>
+        <div class="text-center">
+            <p>© 2024 Volta ao Mundo Canadá. Todos os direitos reservados.</p>
+        </div>
+
     </footer>
 
     <script src="js/bootstrap.min.js"></script>
