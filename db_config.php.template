@@ -1,0 +1,10 @@
+<?php
+// Database configuration
+// Rename this file to db_config.php and place it one level above your web root directory.
+// Then, fill in your actual database credentials.
+
+define('DB_SERVERNAME', 'your_server_name');
+define('DB_USERNAME', 'your_username');
+define('DB_PASSWORD', 'your_password');
+define('DB_NAME', 'your_database_name');
+?>

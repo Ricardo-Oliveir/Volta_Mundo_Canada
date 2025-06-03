@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -11,6 +12,19 @@
 <body>
     <div class="container mt-5">
         <h2>Login</h2>
+
+        <?php
+        if (isset($_SESSION['flash_message'])) {
+            $message = $_SESSION['flash_message'];
+            unset($_SESSION['flash_message']); // Clear the message after displaying
+            $alert_type = $message['type'] === 'error' ? 'danger' : 'success';
+            echo "<div class='alert alert-{$alert_type} alert-dismissible fade show' role='alert'>";
+            echo htmlspecialchars($message['text']);
+            echo "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>";
+            echo "</div>";
+        }
+        ?>
+
         <form action="login_process.php" method="post">
             <div class="mb-3">
                 <label for="username" class="form-label">Usuário</label>
@@ -26,7 +40,7 @@
         </form>
     </div>
 
-    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script> <!-- Changed to bundle for dismissible alerts -->
 </body>
 
 </html>

@@ -8,12 +8,23 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     exit;
 }
 
+// CSRF Token Generation
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+$csrf_token = $_SESSION['csrf_token'];
 
-if (isset($_GET['delete_id'])) {
-    $delete_id = $_GET['delete_id'];
+// Handle Delete Action
+if (isset($_POST['delete_id'])) {
+    if (!isset($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+        die("Invalid CSRF token.");
+    }
+    $delete_id = $_POST['delete_id'];
     $stmt = $conn->prepare("DELETE FROM comments WHERE id = ?");
     $stmt->bind_param("i", $delete_id);
     if ($stmt->execute()) {
+        // Optional: Regenerate token after successful action
+        // $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         header("Location: comments.php");
         exit();
     } else {
@@ -21,11 +32,17 @@ if (isset($_GET['delete_id'])) {
     }
 }
 
-if (isset($_GET['approve_id'])) {
-    $approve_id = $_GET['approve_id'];
+// Handle Approve Action
+if (isset($_POST['approve_id'])) {
+    if (!isset($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+        die("Invalid CSRF token.");
+    }
+    $approve_id = $_POST['approve_id'];
     $stmt = $conn->prepare("UPDATE comments SET approved = TRUE WHERE id = ?");
     $stmt->bind_param("i", $approve_id);
     if ($stmt->execute()) {
+        // Optional: Regenerate token after successful action
+        // $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         header("Location: comments.php");
         exit();
     } else {
@@ -33,8 +50,8 @@ if (isset($_GET['approve_id'])) {
     }
 }
 
-
-$sql = "SELECT id, name, email, comment, image, approved FROM comments";
+// Select image_path as well. The old 'image' column (blob) is no longer primarily used for display.
+$sql = "SELECT id, name, email, comment, image, image_path, approved FROM comments";
 $result = $conn->query($sql);
 ?>
 
@@ -70,16 +87,34 @@ $result = $conn->query($sql);
                         echo "<td>" . htmlspecialchars($row['name']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['email']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['comment']) . "</td>";
-                        if ($row['image']) {
-                            echo "<td><img src='data:image/jpeg;base64," . base64_encode($row['image']) . "' alt='Image' width='100' height='100'></td>";
+                        // Display image using image_path
+                        if (!empty($row['image_path'])) {
+                            echo "<td><img src='" . htmlspecialchars($row['image_path']) . "' alt='Image' width='100' height='100' style='object-fit: cover;'></td>";
                         } else {
-                            echo "<td>N/A</td>";
+                            // Fallback for very old comments that might still have blob and no path
+                            // This part can be removed if no such fallback is needed or after migration
+                            if ($row['image']) { 
+                                echo "<td><img src='data:image/jpeg;base64," . base64_encode($row['image']) . "' alt='Image (Legacy)' width='100' height='100' style='object-fit: cover;'></td>";
+                            } else {
+                                echo "<td>N/A</td>";
+                            }
                         }
                         // Botões para excluir e aprovar o comentário
                         echo "<td>";
-                        echo "<a href='comments.php?delete_id=" . $row['id'] . "' class='btn btn-danger btn-sm'>Excluir</a> ";
+                        // Delete Form
+                        echo "<form method='POST' action='comments.php' style='display:inline-block;'>";
+                        echo "<input type='hidden' name='delete_id' value='" . $row['id'] . "'>";
+                        echo "<input type='hidden' name='csrf_token' value='" . htmlspecialchars($csrf_token, ENT_QUOTES, 'UTF-8') . "'>";
+                        echo "<button type='submit' class='btn btn-danger btn-sm'>Excluir</button>";
+                        echo "</form> ";
+
                         if (!$row['approved']) {
-                            echo "<a href='comments.php?approve_id=" . $row['id'] . "' class='btn btn-success btn-sm'>Aprovar</a>";
+                            // Approve Form
+                            echo "<form method='POST' action='comments.php' style='display:inline-block;'>";
+                            echo "<input type='hidden' name='approve_id' value='" . $row['id'] . "'>";
+                            echo "<input type='hidden' name='csrf_token' value='" . htmlspecialchars($csrf_token, ENT_QUOTES, 'UTF-8') . "'>";
+                            echo "<button type='submit' class='btn btn-success btn-sm'>Aprovar</button>";
+                            echo "</form>";
                         } else {
                             echo "Aprovado";
                         }
