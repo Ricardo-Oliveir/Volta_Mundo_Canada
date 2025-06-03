@@ -1,7 +1,9 @@
 <?php
+session_start(); // Add session_start() at the beginning
 include 'database.php';
 
-$sql = "SELECT name, comment, image FROM comments WHERE approved = TRUE";
+// Select image_path instead of the old image blob column
+$sql = "SELECT name, comment, image_path FROM comments WHERE approved = TRUE";
 $result = $conn->query($sql);
 $approved_comments = [];
 if ($result->num_rows > 0) {
@@ -42,7 +44,7 @@ $conn->close();
                         <a class="nav-link" href="gastronomia.html">Dicas de Gastronomia</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="login.html">Painel Administrativo</a>
+                        <a class="nav-link" href="login.php">Painel Administrativo</a> <!-- Updated link -->
                     </li>
                 </ul>
             </div>
@@ -79,7 +81,18 @@ $conn->close();
         </button>
     </div>
 
-    <div class="container">
+    <div class="container mt-3"> <!-- Added mt-3 for spacing -->
+        <?php
+        if (isset($_SESSION['flash_message'])) {
+            $message = $_SESSION['flash_message'];
+            unset($_SESSION['flash_message']); // Clear the message after displaying
+            $alert_type = $message['type'] === 'error' ? 'danger' : 'success';
+            echo "<div class='alert alert-{$alert_type} alert-dismissible fade show' role='alert'>";
+            echo htmlspecialchars($message['text']);
+            echo "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>";
+            echo "</div>";
+        }
+        ?>
         <div class="row">
             <div class="col-12 col-sm-12 col-md col-lg-6 float-start p-5">
                 <p class="fs-5 m-0">Descobrindo Tesouros Naturais </p>
@@ -153,8 +166,8 @@ $conn->close();
                             <p class="card-text">
                                 <?php echo htmlspecialchars($comment['comment']); ?>
                             </p>
-                            <?php if ($comment['image']) : ?>
-                                <img src="<?php echo htmlspecialchars($comment['image']); ?>" class="card-img-top" alt="Imagem do Comentário">
+                            <?php if (!empty($comment['image_path'])) : ?>
+                                <img src="<?php echo htmlspecialchars($comment['image_path']); ?>" class="card-img-top" alt="Imagem do Comentário" style="max-height: 200px; object-fit: cover;">
                             <?php endif; ?>
                         </div>
                     </div>
@@ -215,7 +228,7 @@ $conn->close();
         </div>
     </footer>
 
-    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script> <!-- Changed to bundle for dismissible alerts -->
 </body>
 
 </html>

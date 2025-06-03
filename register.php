@@ -1,36 +1,56 @@
 <?php
+session_start(); // Add session_start() at the beginning
 include("database.php");
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    $raw_username = $_POST['username'] ?? '';
+    $raw_password = $_POST['password'] ?? '';
 
-    if (!empty($username) && !empty($password)) {
-        // Verificar se o usuário já existe
-        $query = "SELECT * FROM users WHERE username = ? LIMIT 1";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("s", $username);
-        $stmt->execute();
-        $result = $stmt->get_result();
+    $username = trim($raw_username);
+    $password = trim($raw_password); // Password is trimmed, then length checked, then hashed.
 
-        if ($result->num_rows > 0) {
-            echo "Username already exists!";
-        } else {
-            // Criptografar a senha
-            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    // --- Input Validation ---
+    if (empty($username) || empty($password)) {
+        $_SESSION['flash_message'] = ['type' => 'error', 'text' => 'Usuário e senha são obrigatórios.'];
+        header("Location: register.php"); // Redirect back to register form
+        exit;
+    }
 
-            // Inserir o novo usuário no banco de dados
-            $query = "INSERT INTO users (username, password) VALUES (?, ?)";
-            $stmt = $conn->prepare($query);
-            $stmt->bind_param("ss", $username, $hashed_password);
-            if ($stmt->execute()) {
-                echo "User registered successfully!";
-            } else {
-                echo "Error: " . $stmt->error;
-            }
-        }
+    if (strlen($password) < 8) {
+        $_SESSION['flash_message'] = ['type' => 'error', 'text' => 'A senha deve ter pelo menos 8 caracteres.'];
+        header("Location: register.php"); // Redirect back to register form
+        exit;
+    }
+
+    // Proceed with database operations only if initial validation passes
+    // Verificar se o usuário já existe
+    $query = "SELECT * FROM users WHERE username = ? LIMIT 1";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("s", $username); // Use trimmed username
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $_SESSION['flash_message'] = ['type' => 'error', 'text' => 'Erro: Nome de usuário já existe.'];
+        header("Location: register.php"); // Redirect back to register form
+        exit;
     } else {
-        echo "Please enter valid information!";
+        // Criptografar a senha
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT); // Use trimmed password
+
+        // Inserir o novo usuário no banco de dados
+        $query = "INSERT INTO users (username, password) VALUES (?, ?)";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("ss", $username, $hashed_password);
+        if ($stmt->execute()) {
+            $_SESSION['flash_message'] = ['type' => 'success', 'text' => 'Usuário registrado com sucesso! Você já pode fazer o login.'];
+            header("Location: login.php"); // Redirect to login on success
+            exit;
+        } else {
+            $_SESSION['flash_message'] = ['type' => 'error', 'text' => 'Erro ao registrar usuário: ' . $stmt->error];
+            header("Location: register.php"); // Redirect back to register form on DB error
+            exit;
+        }
     }
 }
 ?>
@@ -58,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <input type="password" class="form-control" id="password" name="password" required>
             </div>
             <button type="submit" class="btn btn-primary">Register</button>
-            <a href="login.html" class="btn btn-secondary">Clique aqui para logar</a>
+            <a href="login.php" class="btn btn-secondary">Clique aqui para logar</a> <!-- Link to login.php -->
         </form>
     </div>
 
