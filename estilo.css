@@ -1,9 +1,328 @@
+/* Import Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;700&display=swap');
+
+/* Define Variables */
+:root {
+  --primary-color: #007bff; /* Deep Blue */
+  --secondary-color: #ff7f50; /* Coral */
+  --text-color: #333333; /* Dark Gray */
+  --background-color: #f8f9fa; /* Light Gray */
+  --neutral-gray: #6c757d; /* Medium Gray */
+  --white-color: #ffffff;
+
+  --font-family-sans-serif: 'Open Sans', sans-serif;
+  --font-family-heading: 'Montserrat', sans-serif;
+
+  --section-padding: 60px 0;
+  --card-padding: 20px;
+  --box-shadow-light: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  --box-shadow-hover: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+/* Global Styles */
+body {
+  font-family: var(--font-family-sans-serif);
+  color: var(--text-color);
+  background-color: var(--background-color);
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family-heading);
+  color: var(--primary-color);
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+a {
+  color: var(--secondary-color);
+  text-decoration: none;
+}
+
+a:hover {
+  color: #e06c3e; /* Darker coral */
+  text-decoration: underline;
+}
+
+/* Utility Classes */
+.section-padding {
+  padding: var(--section-padding);
+}
+
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
+.text-secondary {
+  color: var(--secondary-color) !important;
+}
+
+.bg-primary {
+  background-color: var(--primary-color) !important;
+}
+
+.bg-secondary {
+  background-color: var(--secondary-color) !important;
+}
+
+/* Original styles from the file - will review and integrate/remove later if necessary */
 .carousel-item img {
     width: 100%; 
     height: 500px; 
-    
+    object-fit: cover; /* Added for better image scaling */
 }
+
 .card-img-top {
     height: 200px;
     object-fit: cover;
+}
+
+/* Navigation Bar */
+.navbar {
+  background-color: var(--primary-color);
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  box-shadow: var(--box-shadow-light);
+}
+
+.navbar-brand {
+  font-family: var(--font-family-heading);
+  color: var(--white-color);
+  font-size: 1.75rem;
+}
+
+.navbar-brand:hover {
+  color: var(--secondary-color);
+}
+
+.nav-link {
+  font-family: var(--font-family-sans-serif);
+  color: rgba(255, 255, 255, 0.85); /* Slightly muted white */
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+}
+
+.nav-link:hover,
+.nav-link.active { /* Style active link similarly to hover */
+  color: var(--white-color);
+  background-color: rgba(255, 255, 255, 0.1); /* Subtle background on hover/active */
+}
+
+/* Ensure the toggler icon is visible on dark background */
+.navbar-toggler {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* Carousel Styling */
+.carousel-item::before { /* Overlay for text readability */
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3); /* Dark overlay */
+}
+
+.carousel-caption {
+  bottom: 20%; /* Adjust caption position if needed */
+  z-index: 10;
+}
+
+.carousel-caption h5 {
+  font-family: var(--font-family-heading);
+  color: var(--white-color);
+  font-size: 2rem; /* Larger caption title */
+}
+
+.carousel-caption p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.1rem;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: var(--secondary-color); /* Use secondary color for visibility */
+  border-radius: 50%; /* Make them circular */
+  padding: 15px; /* Increase size slightly */
+  background-size: 50% 50%; /* Adjust icon size within the new padding */
+}
+
+.carousel-control-prev-icon:hover,
+.carousel-control-next-icon:hover {
+  background-color: #e06c3e; /* Darker coral */
+}
+
+/* Card Styling */
+.card {
+  border: none; /* Remove default border */
+  box-shadow: var(--box-shadow-light);
+  transition: box-shadow 0.3s ease-in-out;
+  margin-bottom: 1.5rem; /* Add some space between cards */
+}
+
+.card:hover {
+  box-shadow: var(--box-shadow-hover);
+}
+
+.card-body {
+  padding: var(--card-padding);
+}
+
+.card-title {
+  font-family: var(--font-family-heading);
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.card-text {
+  font-family: var(--font-family-sans-serif);
+  color: var(--neutral-gray);
+}
+
+/* Video Section */
+/* Assuming text elements (h2, p) are used for content alongside video */
+/* Global styles for headings and paragraphs will apply. */
+/* Add specific class if more control over spacing/layout is needed e.g. .video-text-content */
+
+/* Comments Section */
+/* Heading "Comentarios" will be styled by global h1-h6 rules */
+/* Comment cards should pick up .card styling if they use the .card class */
+
+/* Form Styling (for comments and potentially other forms) */
+.form-control {
+  font-family: var(--font-family-sans-serif);
+  color: var(--text-color);
+  border: 1px solid #ced4da; /* Standard Bootstrap border color */
+  border-radius: 0.25rem;
+  padding: 0.75rem 1rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Use primary color for focus */
+}
+
+textarea.form-control {
+  min-height: 100px;
+}
+
+.btn {
+  font-family: var(--font-family-heading); /* Use heading font for buttons for a bit of flair */
+  font-weight: bold;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--white-color);
+}
+
+.btn-primary:hover {
+  background-color: #0056b3; /* Darker blue */
+  border-color: #0056b3; /* Darker blue */
+  color: var(--white-color);
+}
+
+.btn-secondary {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+  color: var(--white-color);
+}
+
+.btn-secondary:hover {
+  background-color: #e06c3e; /* Darker coral */
+  border-color: #e06c3e; /* Darker coral */
+  color: var(--white-color);
+}
+
+
+/* Footer */
+.footer {
+  background-color: var(--text-color); /* Dark background for footer */
+  color: var(--background-color); /* Light text for footer */
+  padding: 40px 0;
+  margin-top: 40px; /* Add some space above the footer */
+}
+
+.footer h5 {
+  color: var(--white-color); /* White headings in footer */
+  font-family: var(--font-family-heading);
+  margin-bottom: 1rem;
+}
+
+.footer p {
+  color: var(--neutral-gray); /* Slightly muted text for paragraphs in footer */
+  margin-bottom: 0.5rem;
+}
+
+.footer a {
+  color: var(--secondary-color); /* Accent color for links */
+  text-decoration: none;
+}
+
+.footer a:hover {
+  color: var(--primary-color); /* Primary color on hover for footer links */
+  text-decoration: underline;
+}
+
+.footer .list-unstyled li a {
+  padding: 0.25rem 0;
+  display: inline-block;
+}
+
+.footer .social-icons a {
+  color: var(--background-color);
+  margin-right: 15px;
+  font-size: 1.5rem;
+  transition: color 0.2s ease-in-out;
+}
+
+.footer .social-icons a:hover {
+  color: var(--secondary-color);
+}
+
+/* Scroll to Top Button */
+.scroll-to-top-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: none; /* Initially hidden, JS will manage this */
+    padding: 10px 15px;
+    background-color: var(--secondary-color);
+    color: var(--white-color); /* Ensuring text is white */
+    border-radius: 5px;
+    text-decoration: none;
+    z-index: 1000;
+    border: none; /* Remove any default border */
+    cursor: pointer;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+.scroll-to-top-btn:hover {
+    background-color: var(--primary-color); /* Using primary color on hover */
+    color: var(--white-color); /* Ensure text remains white */
+    text-decoration: none; /* Ensure no underline on hover */
+}
+
+.scroll-to-top-btn i { /* If using Font Awesome */
+    font-size: 1.2em;
+    vertical-align: middle; /* Better icon alignment */
 }
